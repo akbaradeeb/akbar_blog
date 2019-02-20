@@ -1,0 +1,101 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Home {% endblock title %}</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Saturn is free PSD &amp; HTML template by @flamekaizar">
+    <meta name="author" content="Afnizar Nur Ghifari">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+	{% block head_css %}
+		{% block head_css_site %}
+			<link rel="stylesheet" href="{% static 'css/kube.min.css'%}" />
+			<link rel="stylesheet" href="{% static 'css/font-awesome.min.css'%}" />
+			<link rel="stylesheet" href="{% static 'css/custom.min.css'%}" />
+			<link rel="shortcut icon" href="{% static 'img/favicon.png'%}" />
+			<link href="http://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet" type="text/css">
+			<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
+		{% endblock head_css_site %}
+		{% block head_css_page %}{% endblock head_css_page %}
+	{% endblock head_css %}
+</head>
+<body>
+	<!-- Navigation -->
+	<div class="main-nav {% block nav-style %}{% endblock %}">
+		<div class="container">
+			<header class="group top-nav">
+				<nav class="navbar logo-w navbar-left" >
+					<a class="logo" href="index.html">Saturn</a>
+				</nav>
+				<div class="navigation-toggle" data-tools="navigation-toggle" data-target="#navbar-1">
+				    <span class="logo">Saturn</span>
+				</div>
+			    <nav id="navbar-1" class="navbar item-nav navbar-right">
+				    <ul>
+				        <li class="active"><a href="index.html">Home</a></li>
+				        <li><a href="#">About</a></li>
+				        <li><a href="#">Archive</a></li>
+				        <li><a href="#">Contact</a></li>
+				    </ul>
+				</nav>
+			</header>
+		</div>
+	</div>
+
+	<!-- Introduction -->
+
+	{% block intro %}
+	<div class="intro">
+		<div class="container">
+			<div class="units-row">
+			    <div class="unit-10">
+			    	<img class="img-intro" src="img/avatar.png" alt="">
+			    </div>
+			    <div class="unit-90">
+			    	<p class="p-intro">Hello, I’m Saturn. I’m proud to be a part of milky way.</p>
+			    </div>
+			</div>
+		</div>
+	</div>
+	{% endblock intro %}
+	<!-- Content -->
+	<div class="content">
+		 {% block content %}
+            if you see this, something is wrong!
+        {% endblock content %}
+	</div>
+
+	<footer>
+		<div class="container">
+			<div class="units-row">
+			    <div class="unit-50">
+			    	<button class="btn btn-black"><i class="fa fa-arrow-left"></i> PREVIOUS</button>
+			    </div>
+			    <div class="unit-50">
+					<ul class="social list-flat right">
+						<li><a href="mailto:afnizarhilmi@gmail.com"><i class="fa fa-send"></i></a></li>
+						<li><a href="http://twitter.com/flamekaizar"><i class="fa fa-twitter"></i></a></li>
+						<li><a href="http://dribbble.com/flamekaizar"><i class="fa fa-dribbble"></i></a></li>
+						<li><a href="http://behance.com/flamekaizar"><i class="fa fa-behance"></i></a></li>
+					</ul>
+			    </div>
+			</div>
+			<p class="text-centered foot-cp">
+	    		<a href="#">handcrafted by @flamekaizar</a>
+	    	</p>
+		</div>
+	</footer>
+
+	<!-- Javascript -->
+	{% block footer_javascript %}
+        {% block footer_javascript_site %}
+            <script src="{% static 'js/jquery.min.js' %}"></script>
+    		<script src="{% static 'js/kube.min.js' %}"></script>
+        {% endblock footer_javascript_site %}
+        {% block footer_javascript_section %}{% endblock footer_javascript_section %}
+        {% block footer_javascript_page %}{% endblock footer_javascript_page %}
+    {% endblock footer_javascript %}
+</body>
+</html>

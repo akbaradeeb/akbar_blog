@@ -1,0 +1,38 @@
+<!-- djangotemplates/example/templates/index.html -->
+{% extends 'base.html' %}
+{% block title %}Welcome Login{% endblock title %}
+{% block nav-style %}login{% endblock %}
+{% block intro %}
+<div class="intro">
+		<div class="container">
+			<div class="units-row">
+			    <div class="unit-10">
+			    	<img class="img-intro" src="img/avatar.png" alt="">
+			    </div>
+			    <div class="unit-90">
+			    	<p class="p-intro">Signup</p>
+			    </div>
+			</div>
+		</div>
+	</div>
+{% endblock intro %}
+{% block content %}
+    <div class="container">
+
+       <form method="post" novalidate>
+           {% csrf_token %}
+           {% for field in form %}
+              <p>
+                {{ field.label_tag }}<br>
+                {{ field }}
+
+                {% for error in field.errors %}
+                  <p style="color: red">{{ error }}</p>
+                {% endfor %}
+              </p>
+            {% endfor %}
+            <button type="submit" class="btn">Sign up</button>
+       </form>
+
+    </div>
+{% endblock content %}

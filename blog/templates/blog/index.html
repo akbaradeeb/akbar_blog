@@ -1,0 +1,30 @@
+<!-- djangotemplates/example/templates/index.html -->
+{% extends 'base.html' %}
+{% block title %}Welcome Home{% endblock title %}
+{% block nav-style %}home{% endblock %}
+{% block content %}
+    <div class="container">
+      {% for post in posts %}
+      <div class="post">
+        <a href="#"><h1>{{ post.title }}</h1></a>
+        <hr>
+        <div class="in-content">
+            <p>{{ post.body }}</p>
+            <a class="read-more" href="/blog/{{post.url}}">Read more</a>
+        </div>
+        <div class="foot-post">
+            <div class="units-row">
+                <div class="unit-100">
+                    <strong>Tags:</strong>
+                    <a href="">{{ post.tags }}</a>
+                </div>
+                <div class="unit-100">
+                    <strong>COMMENTS:</strong>
+                    <a href="#">3</a>
+                </div>
+            </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+{% endblock content %}
