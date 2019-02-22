@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib import auth,messages
 from .models import Blog,Comment
-from .forms import SignUpForm,Comment
+from .forms import SignUpForm,CommentForm
 
 # Create your views here.
 def index(request):
@@ -17,11 +17,13 @@ def index(request):
 def detail(request, mid=None, slug=None):
     try:
         post = Blog.objects.get(url=slug)
-        form = Comment()
+        post_comments = Comment.objects.filter(blog_id=post.id).order_by('-created_at')
+        print post_comments
+        form = CommentForm()
         form.fields['blog_id'].initial  = post.id
     except Blog.DoesNotExist:
         raise Http404("Question does not exist")
-    return render(request, 'blog/detail.html', {'post': post,'comment_form':form})
+    return render(request, 'blog/detail.html', {'post': post,'post_comments':post_comments,'comment_form':form})
 
 def login(request):
     if request.user.is_authenticated():
