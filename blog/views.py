@@ -5,9 +5,9 @@ from django.contrib.auth import authenticate,login,logout
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,redirect,get_object_or_404
-from django.contrib import auth
+from django.contrib import auth,messages
 from .models import Blog,Comment
-from .forms import SignUpForm
+from .forms import SignUpForm,Comment
 
 # Create your views here.
 def index(request):
@@ -17,9 +17,11 @@ def index(request):
 def detail(request, mid=None, slug=None):
     try:
         post = Blog.objects.get(url=slug)
+        form = Comment()
+        form.fields['blog_id'].initial  = post.id
     except Blog.DoesNotExist:
         raise Http404("Question does not exist")
-    return render(request, 'blog/detail.html', {'post': post})
+    return render(request, 'blog/detail.html', {'post': post,'comment_form':form})
 
 def login(request):
     if request.user.is_authenticated():
@@ -35,7 +37,7 @@ def login(request):
             auth.login(request,user)
             return redirect('/');
         else:
-            message.error(request,"Error wrong username/password")
+            messages.error(request,"Error wrong username/password")
 
     return  render(request,'blog/login.html')
 

@@ -26,5 +26,25 @@
         </div>
       </div>
 
+      <div class="comment">
+          <form method="post" novalidate>
+           {% csrf_token %}
+           {% for field in comment_form %}
+              <p>
+                  {% if field.type != 'hidden' %}
+                  {{ field.label_tag }} {{field.field_type}}<br>
+                  {% endif%}
+
+                {{ field }}
+
+                {% for error in field.errors %}
+                  <p style="color: red">{{ error }}</p>
+                {% endfor %}
+              </p>
+            {% endfor %}
+            <button type="submit" class="btn">Sign up</button>
+       </form>
+      </div>
+
     </div>
 {% endblock content %}

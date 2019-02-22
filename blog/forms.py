@@ -11,3 +11,9 @@ class SignUpForm(UserCreationForm):
     class Meta:
         model  = User
         fields = ('username', 'first_name', 'last_name', 'email','birth_date','password1', 'password2')
+
+class Comment(forms.Form):
+    blog_id = forms.CharField(widget=forms.HiddenInput())
+    name    = forms.CharField(label="Your Name", max_length=255)
+    email   = forms.CharField(label="Email",max_length=255)
+    comment = forms.CharField( widget=forms.Textarea(attrs={'rows': 5, 'cols': 100}))
