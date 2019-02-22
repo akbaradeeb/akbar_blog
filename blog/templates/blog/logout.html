@@ -1,0 +1,25 @@
+<!-- djangotemplates/example/templates/index.html -->
+{% extends 'base.html' %}
+{% block title %}Welcome Login{% endblock title %}
+{% block nav-style %}login{% endblock %}
+{% block content %}
+    <div class="container">
+
+       <div class="section-inner clearfix">
+
+        <h3>Login Form</h3>
+
+        {% if messages %}
+            <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+
+         Logout <successfully class=""></successfully>
+
+        </div>
+
+    </div>
+{% endblock content %}

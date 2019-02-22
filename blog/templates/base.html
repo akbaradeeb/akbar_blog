@@ -34,12 +34,23 @@
 				</div>
 			    <nav id="navbar-1" class="navbar item-nav navbar-right">
 				    <ul>
-				        <li class="active"><a href="index.html">Home</a></li>
+				        <li class="active"><a href="/">Home</a></li>
 				        <li><a href="#">About</a></li>
 				        <li><a href="#">Archive</a></li>
 				        <li><a href="#">Contact</a></li>
+
+						{% if user.is_authenticated %}
+							<li><a href="#">{{user.username}}</a></li>
+							<li><a href="/logout">Logout</a></li>
+						{% else %}
+							<li><a href="/login">Login</a></li>
+							<li><a href="/signup">Register</a></li>
+						{% endif %}
 				    </ul>
+
+
 				</nav>
+
 			</header>
 		</div>
 	</div>
@@ -54,7 +65,7 @@
 			    	<img class="img-intro" src="img/avatar.png" alt="">
 			    </div>
 			    <div class="unit-90">
-			    	<p class="p-intro">Hello, I’m Saturn. I’m proud to be a part of milky way.</p>
+			    	<p class="p-intro">{% block intro_title %}Hello, I’m Saturn. I’m proud to be a part of milky way.{% endblock intro_title %}</p>
 			    </div>
 			</div>
 		</div>

@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,redirect,get_object_or_404
+from django.contrib import auth
 from .models import Blog,Comment
 from .forms import SignUpForm
 
@@ -19,6 +20,29 @@ def detail(request, mid=None, slug=None):
     except Blog.DoesNotExist:
         raise Http404("Question does not exist")
     return render(request, 'blog/detail.html', {'post': post})
+
+def login(request):
+    if request.user.is_authenticated():
+        return redirect('/')
+
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = auth.authenticate(username=username,password=password)
+
+        if user is not None:
+            auth.login(request,user)
+            return redirect('/');
+        else:
+            message.error(request,"Error wrong username/password")
+
+    return  render(request,'blog/login.html')
+
+def logout(request):
+    auth.logout(request)
+    return redirect('/');
+    return render(request,'blog/logout.html')
 
 def signup(request):
     if request.method == "POST":
