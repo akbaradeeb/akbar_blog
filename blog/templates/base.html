@@ -20,6 +20,14 @@
 		{% endblock head_css_site %}
 		{% block head_css_page %}{% endblock head_css_page %}
 	{% endblock head_css %}
+	{% block header_javascript %}
+        {% block header_javascript_site %}
+            <script src="{% static 'js/jquery.min.js' %}"></script>
+        {% endblock header_javascript_site %}
+        {% block header_javascript_section %}{% endblock header_javascript_section %}
+        {% block header_javascript_page %}{% endblock header_javascript_page %}
+    {% endblock header_javascript %}
+
 </head>
 <body>
 	<!-- Navigation -->
@@ -41,6 +49,7 @@
 
 						{% if user.is_authenticated %}
 							<li><a href="#">{{user.username}}</a></li>
+							<li><a href="/blog/add">Add Blog</a></li>
 							<li><a href="/logout">Logout</a></li>
 						{% else %}
 							<li><a href="/login">Login</a></li>
@@ -100,8 +109,7 @@
 	<!-- Javascript -->
 	{% block footer_javascript %}
         {% block footer_javascript_site %}
-            <script src="{% static 'js/jquery.min.js' %}"></script>
-    		<script src="{% static 'js/kube.min.js' %}"></script>
+            <script src="{% static 'js/kube.min.js' %}"></script>
         {% endblock footer_javascript_site %}
         {% block footer_javascript_section %}{% endblock footer_javascript_section %}
         {% block footer_javascript_page %}{% endblock footer_javascript_page %}

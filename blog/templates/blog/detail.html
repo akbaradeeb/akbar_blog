@@ -27,7 +27,7 @@
       </div>
 
       <div class="comment">
-          <form method="post" novalidate>
+          <form method="post" id="comment_form" novalidate>
            {% csrf_token %}
            {% for field in comment_form %}
               <p>
@@ -42,9 +42,44 @@
                 {% endfor %}
               </p>
             {% endfor %}
-            <button type="submit" class="btn">Sign up</button>
+            <button ttype="button" id="post_comment" class="btn">Sign up</button>
        </form>
       </div>
 
+      {% if post_comments  %}
+      <div class="comment-box">
+           <ul>
+               {% for comment in post_comments %}
+               <li>
+                <div><a href="javascript:void(0);"><img src="images/pikabob.png" width="55" height="55" alt="{{comment.name}}"></a></div>
+                <div>
+                <header><a href="javascript:void(0);">{{comment.name}}</a> - <span>{{ comment.created_at|date:"M d, Y" }}</span></header>
+                <p>{{comment.comment}}</a></p>
+                </div>
+                </li>
+               {% endfor %}
+           </ul>
+      </div>
+      {% endif  %}
     </div>
+<script>
+    $(document).ready(function(e){
+
+     $("#post_comment").click(function(e){
+        e.preventDefault();
+        var that = $(this);
+        $.ajax({
+            url:'/blog/post-comment/',
+            data:$("#comment_form").serialize(),
+            type:"POST",
+            beforSend:function(e){
+             $(that).val('Wait...')
+            },
+            success:function(e){
+             $(".comment-box ul").prepend(e)
+            }
+        });
+     })
+    })
+</script>
 {% endblock content %}

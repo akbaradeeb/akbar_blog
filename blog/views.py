@@ -7,11 +7,11 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib import auth,messages
 from .models import Blog,Comment
-from .forms import SignUpForm,CommentForm
+from .forms import SignUpForm,CommentForm,BlogForm
 
 # Create your views here.
 def index(request):
-    posts = Blog.objects.all().order_by('-created_at')[:5]
+    posts = Blog.objects.all().order_by('-created_at')[:10]
     return render(request,'blog/index.html',{'posts':posts})
 
 def detail(request, mid=None, slug=None):
@@ -64,3 +64,25 @@ def signup(request):
     else:
         form = SignUpForm()
     return render(request,'blog/signup.html',{'form': form})
+
+def post_comment(request):
+    if request.is_ajax():
+        form = CommentForm(request.POST)
+
+        if form.is_valid():
+            comment = form.save()
+            #comment.refresh_from_db()
+            #comment.save()
+            return render(request, 'blog/post_comment.html', {'comment':comment})
+    else:
+        return render(request, 'blog/post_comment.html')
+
+def add_blog(request):
+    if request.method == "POST":
+        form = BlogForm(request.POST)
+        if(form.is_valid()):
+            blog = form.save(user_id=request.user.id)
+            return redirect('/')
+    else:
+        form = BlogForm()
+    return render(request, 'blog/add_blog.html',{'form':form})
