@@ -6,7 +6,7 @@
     <div class="container">
       {% for post in posts %}
       <div class="post">
-        <a href="#"><h1>{{ post.title }}</h1></a>
+        <a href="/blog/{{post.url}}"><h1>{{ post.title }}</h1></a>
         <hr>
         <div class="in-content">
             <p>{{ post.body }}</p>
@@ -20,11 +20,11 @@
                 </div>
                 <div class="unit-100">
                     <strong>Comments:</strong>
-                    <a href="#">3</a>
+                    <a href="#">{{post.comment_set.count}}</a>
                 </div>
                 <div class="unit-100">
                     <strong>Author:</strong>
-                    <a href="#">3</a>
+                    <a href="#">{{post.author.username}}</a>
                 </div>
             </div>
         </div>

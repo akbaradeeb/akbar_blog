@@ -6,8 +6,8 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib import auth,messages
-from .models import Blog,Comment
-from .forms import SignUpForm,CommentForm,BlogForm
+from .models import Blog,Comment,Profile
+from .forms import SignUpForm,CommentForm,BlogForm,UpdateProfileForm
 
 # Create your views here.
 def index(request):
@@ -20,7 +20,6 @@ def detail(request, mid=None, slug=None):
         post_comments = Comment.objects.filter(blog_id=post.id).order_by('-created_at')
         print post_comments
         form = CommentForm()
-        form.fields['blog_id'].initial  = post.id
     except Blog.DoesNotExist:
         raise Http404("Question does not exist")
     return render(request, 'blog/detail.html', {'post': post,'post_comments':post_comments,'comment_form':form})
@@ -68,9 +67,9 @@ def signup(request):
 def post_comment(request):
     if request.is_ajax():
         form = CommentForm(request.POST)
-
         if form.is_valid():
-            comment = form.save()
+            blog    = Blog.objects.get(id=request.POST['blog_id'])
+            comment = form.save(blog)
             #comment.refresh_from_db()
             #comment.save()
             return render(request, 'blog/post_comment.html', {'comment':comment})
@@ -81,8 +80,25 @@ def add_blog(request):
     if request.method == "POST":
         form = BlogForm(request.POST)
         if(form.is_valid()):
-            blog = form.save(user_id=request.user.id)
+            blog = form.save(user=request.user)
             return redirect('/')
     else:
         form = BlogForm()
     return render(request, 'blog/add_blog.html',{'form':form})
+
+def profile(request):
+    return render(request, 'blog/profile.html',{})
+
+def profile_update(request):
+    profile = get_object_or_404(Profile,pk=request.user.profile.id)
+
+    if request.method == "POST":
+        form = UpdateProfileForm(request.POST or None, request.FILES,instance=profile)
+        if(form.is_valid()):
+            profile = form.save(commit=False)
+            profile.user = request.user
+            profile.save()
+            #return redirect('/')
+    else:
+        form = UpdateProfileForm(instance=profile)
+    return render(request, 'blog/profile_update.html',{'form':form})

@@ -11,6 +11,7 @@
 
 	{% block head_css %}
 		{% block head_css_site %}
+			<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 			<link rel="stylesheet" href="{% static 'css/kube.min.css'%}" />
 			<link rel="stylesheet" href="{% static 'css/font-awesome.min.css'%}" />
 			<link rel="stylesheet" href="{% static 'css/custom.min.css'%}" />
@@ -23,6 +24,8 @@
 	{% block header_javascript %}
         {% block header_javascript_site %}
             <script src="{% static 'js/jquery.min.js' %}"></script>
+			<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+			<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
         {% endblock header_javascript_site %}
         {% block header_javascript_section %}{% endblock header_javascript_section %}
         {% block header_javascript_page %}{% endblock header_javascript_page %}
@@ -48,7 +51,7 @@
 				        <li><a href="#">Contact</a></li>
 
 						{% if user.is_authenticated %}
-							<li><a href="#">{{user.username}}</a></li>
+							<li><a href="/profile">{{user.username}}</a></li>
 							<li><a href="/blog/add">Add Blog</a></li>
 							<li><a href="/logout">Logout</a></li>
 						{% else %}

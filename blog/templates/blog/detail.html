@@ -28,6 +28,7 @@
 
       <div class="comment">
           <form method="post" id="comment_form" novalidate>
+
            {% csrf_token %}
            {% for field in comment_form %}
               <p>
@@ -70,7 +71,7 @@
         var that = $(this);
         $.ajax({
             url:'/blog/post-comment/',
-            data:$("#comment_form").serialize(),
+            data:$("#comment_form").serialize()+"&blog_id={{post.id}}",
             type:"POST",
             beforSend:function(e){
              $(that).val('Wait...')

@@ -1,0 +1,26 @@
+<!-- djangotemplates/example/templates/index.html -->
+{% extends 'base.html' %}
+{% block title %}Update Profile{% endblock title %}
+{% block nav-style %}login{% endblock %}
+{% block intro_title %}Add Blog{% endblock intro_title %}
+{% block content %}
+    <div class="container">
+
+       <form method="post" action="/profile/update/" enctype="multipart/form-data" novalidate>
+           {% csrf_token %}
+           {% for field in form %}
+              <p>
+                {{ field.label_tag }}<br>
+                {{ field }}
+
+                {% for error in field.errors %}
+                  <p style="color: red">{{ error }}</p>
+                {% endfor %}
+              </p>
+            {% endfor %}
+            <button type="submit" class="btn">Update</button>
+       </form>
+
+    </div>
+
+{% endblock content %}

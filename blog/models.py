@@ -6,7 +6,7 @@ from django.utils.timezone import now
 class Blog(models.Model):
     title  = models.CharField(max_length=255)
     url    = models.SlugField('url', max_length=255, blank=True)
-    author_id = models.ManyToManyField(User)
+    author = models.ForeignKey(User, blank=True,default=None)
     body   = models.TextField()
     tags   = models.CharField(max_length=255, default=" ")
     created_at = models.DateTimeField(default=now, blank=True)
@@ -18,7 +18,7 @@ class Blog(models.Model):
 
 
 class Comment(models.Model):
-    blog_id = models.IntegerField()
+    blog    = models.ForeignKey(Blog, blank=True, default=None)
     name    = models.CharField(max_length=255)
     email   = models.CharField(max_length=255)
     comment = models.TextField()
@@ -30,8 +30,12 @@ class Comment(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
     bio  = models.TextField(max_length=500,blank=True)
-    location = models.CharField(max_length=30, blank=True)
-    birth_date = models.DateField(null=True,blank=True)
+    location      = models.CharField(max_length=30, blank=True)
+    birth_date    = models.DateField(null=True,blank=True)
+    profile_image = models.ImageField(upload_to='images/',blank=True,default=" ")
+
+    def __str__(self):
+        return self.location
 
     @receiver(post_save,sender=User)
     def update_user_profile(sender,instance,created,**kwargs):
