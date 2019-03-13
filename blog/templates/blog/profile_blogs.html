@@ -1,0 +1,39 @@
+<!-- djangotemplates/example/templates/index.html -->
+{% extends 'base.html' %}
+{% block title %}Blog List{% endblock title %}
+{% block nav-style %}login{% endblock %}
+{% block intro_title %} {{user.first_name}} {{user.last_name}} :: Blogs {% endblock intro_title %}
+{% block content %}
+    <div class="container">
+
+        <div class="row">
+            <table class="table">
+                <thead>
+                 <tr>
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>Tags</th>
+                    <th>Created At</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                 </tr>
+                </thead>
+                <tbody>
+                 {% load app_tags %}
+                 {% for blog in blogs %}
+                 <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{blog.title}}</td>
+                    <td>{{blog.tags}}</td>
+                    <td>{{blog.created_at}}</td>
+                    <td>{{ status|get_item:blog.status }}</td>
+                    <td><a href="/blog/edit/{{blog.id}}">Edit</a></td>
+                 </tr>
+                 {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+{% endblock content %}

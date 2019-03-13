@@ -38,21 +38,22 @@ class BlogForm(forms.ModelForm):
         model  = Blog
         fields = ('title','body','tags','status')
 
-    def save(self,user,commit=True):
+    def save(self,user,create_slug=True,commit=True):
         instance = super(BlogForm, self).save(commit=False)
         #Creating Slug
-        slug = slugify(instance.title)
-        instance.author = user
+        if(create_slug==True):
+            slug = slugify(instance.title)
+            instance.author = user
+            max_length = Blog._meta.get_field('url').max_length
+            instance.url = orig = slugify(instance.title)[:max_length]
 
-        max_length = Blog._meta.get_field('url').max_length
-        instance.url = orig = slugify(instance.title)[:max_length]
+            for x in itertools.count(1):
+                if not Blog.objects.filter(url=instance.url).exists():
+                    break
 
-        for x in itertools.count(1):
-            if not Blog.objects.filter(url=instance.url).exists():
-                break
+                # Truncate the original slug dynamically. Minus 1 for the hyphen.
+                instance.url = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
 
-            # Truncate the original slug dynamically. Minus 1 for the hyphen.
-            instance.url = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
         instance.save()
         return instance;
 

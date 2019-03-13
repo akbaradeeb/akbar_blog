@@ -11,14 +11,13 @@ from .forms import SignUpForm,CommentForm,BlogForm,UpdateProfileForm
 
 # Create your views here.
 def index(request):
-    posts = Blog.objects.all().order_by('-created_at')[:10]
+    posts = Blog.objects.filter(status=1).order_by('-created_at')[:10]
     return render(request,'blog/index.html',{'posts':posts})
 
 def detail(request, mid=None, slug=None):
     try:
         post = Blog.objects.get(url=slug)
         post_comments = Comment.objects.filter(blog_id=post.id).order_by('-created_at')
-        print post_comments
         form = CommentForm()
     except Blog.DoesNotExist:
         raise Http404("Question does not exist")
@@ -76,16 +75,6 @@ def post_comment(request):
     else:
         return render(request, 'blog/post_comment.html')
 
-def add_blog(request):
-    if request.method == "POST":
-        form = BlogForm(request.POST)
-        if(form.is_valid()):
-            blog = form.save(user=request.user)
-            return redirect('/')
-    else:
-        form = BlogForm()
-    return render(request, 'blog/add_blog.html',{'form':form})
-
 def profile(request):
     return render(request, 'blog/profile.html',{})
 
@@ -102,3 +91,31 @@ def profile_update(request):
     else:
         form = UpdateProfileForm(instance=profile)
     return render(request, 'blog/profile_update.html',{'form':form})
+
+def add_blog(request):
+    if request.method == "POST":
+        form = BlogForm(request.POST)
+        if(form.is_valid()):
+            blog = form.save(user=request.user)
+            return redirect('/')
+    else:
+        form = BlogForm()
+    return render(request, 'blog/add_blog.html',{'form':form})
+
+def profile_blogs(request):
+    status = {1:'Enable',2:'Disable'}
+    blogs = Blog.objects.filter(author=request.user.id).order_by('-created_at')
+    return render(request, 'blog/profile_blogs.html', {'blogs': blogs,'status':status})
+
+def edit_blog(request,id=None):
+    blog = get_object_or_404(Blog, pk=id)
+    if request.method == "POST":
+        form = BlogForm(request.POST or None, request.FILES,instance=blog)
+        if(form.is_valid()):
+            update_blog = form.save(user=request.user,create_slug=False,commit=False)
+            update_blog.url = blog.url
+            update_blog.save()
+            return redirect('/')
+    else:
+        form = BlogForm(instance=blog)
+    return render(request, 'blog/edit_blog.html',{'form':form})
