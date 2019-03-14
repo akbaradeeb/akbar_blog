@@ -1,7 +1,8 @@
 <!-- djangotemplates/example/templates/index.html -->
 {% extends 'base.html' %}
-{% block title %}Welcome Home {% endblock title %}
+{% block title %} {{author.first_name}} {{author.last_name}} Blogs {% endblock title %}
 {% block nav-style %}home{% endblock %}
+{% block intro_title %}{{author.first_name}} {{author.last_name}} Blogs{% endblock intro_title %}
 {% block content %}
     <div class="container">
      <div class="row">

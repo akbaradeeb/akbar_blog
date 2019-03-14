@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib import auth,messages
+from django.contrib.auth.models import User
 from .models import Blog,Comment,Profile
 from .forms import SignUpForm,CommentForm,BlogForm,UpdateProfileForm
 
@@ -119,3 +120,10 @@ def edit_blog(request,id=None):
     else:
         form = BlogForm(instance=blog)
     return render(request, 'blog/edit_blog.html',{'form':form})
+
+# Create your views here.
+
+def user_post(request,slug=None):
+    user  = get_object_or_404(User,username=slug)
+    posts = Blog.objects.filter(status=1,author=user).order_by('-created_at')[:10]
+    return render(request, 'blog/user_post.html', {'posts': posts,'author':user})

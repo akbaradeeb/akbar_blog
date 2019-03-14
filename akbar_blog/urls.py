@@ -19,5 +19,8 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^', include(('blog.urls','blog'),namespace="blog")),
+    url(r'^', include('users.urls', namespace='users')),
+    url(r'^api/', include('views.api_root'))
     url(r'^admin/', admin.site.urls,),
+
 ]

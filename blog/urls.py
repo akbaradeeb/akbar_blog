@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^blog/post-comment/$', views.post_comment, name='post_comment'),
     url(r'^blog/add$', views.add_blog, name='add_blog'),
     url(r'^blog/edit/(?P<id>[0-9]+)$', views.edit_blog, name='edit_blog'),
+    url(r'^blog/author/(?P<slug>[-\w]+)$', views.user_post, name='user_post'),
     url(r'^blog/(?P<slug>[-\w]+)$', views.detail, name='detail')
 ]
 
